@@ -1,0 +1,19 @@
+body, html {
+    font-family: $roboto;
+}
+
+.page-wrapper {
+    max-width: $max-width;
+    margin: 0 auto;
+    padding: 0 1em;
+}
+
+h1 {
+    font-family: $roboto-slab;
+    font-weight: 700;
+    font-size: 2em;
+}
+
+.subtitle {
+    font-family: $roboto-condensed;
+}

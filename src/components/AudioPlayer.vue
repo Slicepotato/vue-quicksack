@@ -14,14 +14,14 @@
                 @click="toggleAudio()"
                 v-show="!isPlaying"
             >
-                <i class="fas fa-play"></i>
+                <fa :icon="['fas', 'play']" />
             </button>
             <button 
                 type="button"
                 @click="toggleAudio()"
                 v-show="isPlaying"
             >
-                <i class="fas fa-stop"></i>
+                <fa :icon="['fas', 'stop']" />
             </button>
         </div>
         <div class="progress-bar">

@@ -1,6 +1,7 @@
 <template>
     <div>
-       <pre>{{ comingSoon }}</pre>
+       <h2>Coming Soon</h2>
+       <p>{{ comingSoon }}</p>
     </div>
 </template>
 

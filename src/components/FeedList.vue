@@ -17,14 +17,14 @@
                         desc: episode.description,
                         url: episode.enclosure.link,
                         type: episode.enclosure.type,
-                        objectid: episode.enclosure.guid,
+                        objectid: episode.guid,
                     }}">give link</router-link>
                 <p class="pubdate">{{ formatDate(episode.pubDate) }}</p>
                 <p class="desc">{{ episode.description }}</p>
                 <AudioPlayer 
                     :url="episode.enclosure.link" 
                     :type="episode.enclosure.type"
-                    :objectid="episode.enclosure.guid"
+                    :objectid="episode.guid"
                 />
             </div>
         </div>  
@@ -38,6 +38,9 @@ import AudioPlayer from '@/components/AudioPlayer.vue';
 
 const feedParser = "https://api.rss2json.com/v1/api.json";
 
+const tmdbEntry = "http://api.themoviedb.org/3/search/movie";
+const tmdbKey = "67d23767771b66aa28d6965682f3d5f3";
+
 export default {
     name: "Episode List",
     components: {
@@ -47,6 +50,8 @@ export default {
         return {
             searchQuery: null,
             items: [],
+            posterImg: [],
+            posterPath: 'https://www.themoviedb.org/t/p/w600_and_h900_bestv2',
             recents: {
                 title: "Recents",
                 items: [],
@@ -105,9 +110,22 @@ export default {
                     count: 1000,
                 }
             })
-        }
+        },
+        fetchPoster(movieTitle, id) {
+            axios.get(tmdbEntry, {
+                params: {
+                    query: movieTitle,
+                    api_key: tmdbKey
+                }
+            })
+            .then(response => {
+                if(response.data.results === !undefined || response.data.results.length > 0) {
+                    this.posterImg.push({ path: response.data.results[0].poster_path, id: id });
+                }    
+            })
+        },
     },
-    mounted() {
+    mounted: function() {
         axios.all([
             this.recentFeed(),
             this.archiveFeed()
@@ -121,9 +139,9 @@ export default {
     computed: {
         resultQuery(){
             if(this.searchQuery){
-            return this.items.filter((item)=>{
-                return this.searchQuery.toLowerCase().split(' ').every(v => item.title.toLowerCase().includes(v))
-            })
+                return this.items.filter((item)=>{
+                    return this.searchQuery.toLowerCase().split(' ').every(v => item.title.toLowerCase().includes(v))
+                })
             } else{
                 return this.items;
             }

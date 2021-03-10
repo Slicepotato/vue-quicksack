@@ -2,7 +2,6 @@
   <div class="page-wrapper">
     <Header />
     <UpNext />
-    <SackList />
     <router-view />
     <Footer />
   </div>
@@ -11,7 +10,6 @@
 <script>
 import Header from '@/components/Header.vue';
 import UpNext from '@/components/UpNext.vue';
-import SackList from '@/components/SackList.vue';
 import Footer from '@/components/Footer.vue';
 
 export default {
@@ -19,8 +17,7 @@ export default {
   components: {
     Header,
     UpNext,
-    SackList,
-    Footer
+    Footer,
   }
 }
 </script>

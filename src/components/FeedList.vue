@@ -1,24 +1,36 @@
 <template>
     <div class="feed">
-        <div class="search-wrapper panel-heading col-sm-12">
-            <input class="form-control" type="text" v-model="searchQuery" placeholder="Search" />
+        <div class="search-wrapper">
+            <label for="episode-search">Search</label>
+            <input id="episode-search" class="form-control" type="text" v-model="searchQuery" placeholder="Look up an episode..." />
         </div>  
         <div class="recent-items">
-            <div v-for="episode in resultQuery" v-bind:key="episode" class="card">
-                <h3>{{episodeNumber(episode.title)}}</h3>
-                <h3 class="title">{{ formatTitle(episode.title) }}</h3>
-                <router-link :to="{ 
-                    name: 'Details', 
-                    params: { 
-                        episodeId: formatLink(episode.title),
-                        title: formatTitle(episode.title),
-                        epNum: episodeNumber(episode.title),
-                        pubdate: formatDate(episode.pubDate),
-                        desc: episode.description,
-                        url: episode.enclosure.link,
-                        type: episode.enclosure.type,
-                        objectid: episode.guid,
-                    }}">give link</router-link>
+            <div v-for="episode in resultQuery" :key="episode" class="card">
+                <h3 class="ep-number">
+                    <button @click="copyToClipboard($route.path + formatLink(episode.title))" class="copy-link">
+                        <fa :icon="['fas', 'link']" />
+                    </button>
+                    <span>{{episodeNumber(episode.title)}}</span>
+                </h3>
+                <h3 class="title">
+                    <router-link 
+                        class="episode-link" 
+                        :to="{ 
+                        name: 'Details', 
+                        params: { 
+                            episodeId: formatLink(episode.title),
+                            title: formatTitle(episode.title),
+                            epNum: episodeNumber(episode.title),
+                            pubdate: formatDate(episode.pubDate),
+                            desc: episode.description,
+                            url: episode.enclosure.link,
+                            type: episode.enclosure.type,
+                            objectid: episode.guid,
+                        }}">
+                        <span>{{ formatTitle(episode.title) }}</span>
+                        <fa :icon="['fas', 'external-link-alt']" />
+                    </router-link>
+                </h3>
                 <p class="pubdate">{{ formatDate(episode.pubDate) }}</p>
                 <p class="desc">{{ episode.description }}</p>
                 <AudioPlayer 
@@ -28,6 +40,15 @@
                 />
             </div>
         </div>  
+        <button 
+            @click="scrollTop()" 
+            id="return" 
+            class="scroll-to-top"
+            title="Go to top"
+            v-show="top"
+        >
+            <fa :icon="['fas', 'angle-up']" />
+        </button>
     </div>
 </template>
 
@@ -49,6 +70,7 @@ export default {
     data () {
         return {
             searchQuery: null,
+            top: false,
             items: [],
             posterImg: [],
             posterPath: 'https://www.themoviedb.org/t/p/w600_and_h900_bestv2',
@@ -65,6 +87,17 @@ export default {
         }
     },
     methods: {
+        scrollTop() {
+            window.scrollTo({
+                top: 0,
+                behavior: "smooth"
+            })
+        },
+        onScroll(e) {
+            if (typeof window === 'undefined') return
+            const top = window.pageYOffset ||   e.target.scrollTop || 0
+            this.top = top > 50
+        },
         formatDate(date) {
             return moment(date).format('MMMM Do YYYY');
         },
@@ -79,11 +112,19 @@ export default {
             }
         },
         episodeNumber(title) {
-            let epNum = title.substring(0, title.indexOf(":"));
-            let episodeNumber = epNum.replace(/\D/g, "");
-            episodeNumber = episodeNumber.substring(0, 3);
+            if(title.substring(0, title.indexOf(":"))){
+                let epNum = title.substring(0, title.indexOf(":"));
+                let episodeNumber = epNum.replace(/\D/g, "");
+                episodeNumber = episodeNumber.substring(0, 3);
 
-            return episodeNumber;
+                if(this.isNumeric(episodeNumber)){
+                    return '#' + episodeNumber;
+                } else {
+                    return 'Special'
+                }
+            } else {
+                return 'Special'
+            }
         },
         formatTitle(title) {
             if (title.indexOf(':') !== -1) {
@@ -91,7 +132,17 @@ export default {
                 prettyName = prettyName.trim();
                 
                 return prettyName;
+            } else {
+                return title;
             }
+        },
+        isNumeric(n) {
+            return !isNaN(parseFloat(n)) && isFinite(n);
+        },
+        async copyToClipboard(route) {
+            let link = window.location.origin + route;
+            await navigator.clipboard.writeText(link);
+            alert(link + ' copied!');
         },
         recentFeed() {
             return axios.get(feedParser, {
@@ -146,15 +197,51 @@ export default {
                 return this.items;
             }
         }
-    }
+    },
+    created () {
+        window.addEventListener('scroll', this.onScroll);
+    },
+    unmounted () {
+        window.removeEventListener('scroll', this.onScroll);
+    },
 }
 </script>
-<style lang="scss">
-@import '@/assets/scss/utility/variables';
+<style lang="scss" scoped>
+.recent-items {
+    @include break('small') {
+        display: grid;
+        column-gap: 2rem;
+        justify-content: center;
+        grid-template-columns: repeat(auto-fit,$col3);
+    }
+}
 
-.card {
-    padding: 1em;
-    margin-bottom: 2em;
-    border: 1px solid $blk;
+.episode-link {
+    text-decoration: none;
+    color: $blk;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+
+    svg {
+        font-size: 1.25rem;
+        margin-left: 1rem;
+    }
+
+    &:hover, &:focus {
+        text-decoration: underline;
+    }
+}
+
+.search-wrapper {
+    padding: 1rem 0 2rem;
+
+    input {
+        width: 100%;
+        padding: .5rem;
+        font-size: 1.5rem;
+        border: 3px solid $grey-8;
+        border-radius: 5px;
+    }
 }
 </style>

@@ -19,6 +19,9 @@ $grey-1: #f8f8f8;
 
 $err-red: #cc1100;
 
+$riv-blue: #468dd3;
+$riv-blue-dk: #2767a5;
+
 // z-index scale
 $z-index-1: 250;
 $z-index-2: 500;
@@ -37,6 +40,6 @@ $breakpoints: (
 ) !default;
 
 $max-width: 1200px;
-$col2: $max-width / 2;
-$col3: $max-width / 3;
-$col4: $max-width / 4;
+$col2: $max-width / 2.75;
+$col3: $max-width / 3.75;
+$col4: $max-width / 4.75;

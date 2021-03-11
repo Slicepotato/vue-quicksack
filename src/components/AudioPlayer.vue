@@ -8,24 +8,24 @@
             <source :src="url" :type="type">
         </audio>
 
-        <div>
+        <div class="control">
             <button 
                 type="button"
                 @click="toggleAudio()"
                 v-show="!isPlaying"
             >
-                <fa :icon="['fas', 'play']" />
+                <fa :icon="['fas', 'play-circle']" />
             </button>
             <button 
                 type="button"
                 @click="toggleAudio()"
                 v-show="isPlaying"
             >
-                <fa :icon="['fas', 'stop']" />
+                <fa :icon="['fas', 'stop-circle']" />
             </button>
         </div>
         <div class="progress-bar">
-            <div>
+            <div v-show="audioLoaded">
                 <input
                     v-model="playbackTime"
                     type="range"
@@ -33,16 +33,9 @@
                     :max="audioDuration"
                     name="position"
                 />
-                <div 
-                    v-show="!audioLoaded"
-                    class=""
-                >
-                    <span>Loading please wait...</span>
-                </div>
 
                 <div
-                    v-show="audioLoaded"
-                    class=""
+                    class="timing"
                 >
                     <span v-html="elapsedTime()"></span> /
                     <span v-html="totalTime()"></span>
@@ -189,3 +182,115 @@ export default {
     }
 }
 </script>
+<style lang="scss" scoped>
+.audio-player {
+        margin-top: auto;
+}
+
+.control {
+    margin: 0 auto;
+    text-align: center;
+
+    button {
+        font-size: 6rem;
+        background-color: transparent;
+        border: none;
+        outline: none;
+    }
+}
+
+.progress-bar {
+    margin: 0 0 1rem;
+    padding: 0 1rem;
+
+    input[type=range] {
+    height: 38px;
+    -webkit-appearance: none;
+    margin: 10px 0;
+    width: 100%;
+    }
+    input[type=range]:focus {
+    outline: none;
+    }
+    input[type=range]::-webkit-slider-runnable-track {
+    width: 100%;
+    height: 25px;
+    cursor: pointer;
+    animate: 0.2s;
+    box-shadow: 0px 0px 0px #000000;
+    background: #3071A9;
+    border-radius: 5px;
+    border: 0px solid #000000;
+    }
+    input[type=range]::-webkit-slider-thumb {
+    box-shadow: 0px 0px 0px #000000;
+    border: 2px solid #000000;
+    height: 30px;
+    width: 15px;
+    border-radius: 5px;
+    background: #FFFFFF;
+    cursor: pointer;
+    -webkit-appearance: none;
+    margin-top: -3.5px;
+    }
+    input[type=range]:focus::-webkit-slider-runnable-track {
+    background: #3071A9;
+    }
+    input[type=range]::-moz-range-track {
+    width: 100%;
+    height: 25px;
+    cursor: pointer;
+    animate: 0.2s;
+    box-shadow: 0px 0px 0px #000000;
+    background: #3071A9;
+    border-radius: 5px;
+    border: 0px solid #000000;
+    }
+    input[type=range]::-moz-range-thumb {
+    box-shadow: 0px 0px 0px #000000;
+    border: 2px solid #000000;
+    height: 30px;
+    width: 15px;
+    border-radius: 5px;
+    background: #FFFFFF;
+    cursor: pointer;
+    }
+    input[type=range]::-ms-track {
+    width: 100%;
+    height: 25px;
+    cursor: pointer;
+    animate: 0.2s;
+    background: transparent;
+    border-color: transparent;
+    color: transparent;
+    }
+    input[type=range]::-ms-fill-lower {
+    background: #3071A9;
+    border: 0px solid #000000;
+    border-radius: 10px;
+    box-shadow: 0px 0px 0px #000000;
+    }
+    input[type=range]::-ms-fill-upper {
+    background: #3071A9;
+    border: 0px solid #000000;
+    border-radius: 10px;
+    box-shadow: 0px 0px 0px #000000;
+    }
+    input[type=range]::-ms-thumb {
+    margin-top: 1px;
+    box-shadow: 0px 0px 0px #000000;
+    border: 2px solid #000000;
+    height: 30px;
+    width: 15px;
+    border-radius: 5px;
+    background: #FFFFFF;
+    cursor: pointer;
+    }
+    input[type=range]:focus::-ms-fill-lower {
+    background: #3071A9;
+    }
+    input[type=range]:focus::-ms-fill-upper {
+    background: #3071A9;
+    }
+}
+</style>

@@ -1,5 +1,5 @@
 <template>
-  <div class="page-wrapper">
+  <div class="page-wrapper light">
     <Header />
     <UpNext />
     <router-view />

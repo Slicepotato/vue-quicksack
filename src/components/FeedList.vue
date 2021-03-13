@@ -7,7 +7,7 @@
         <div class="recent-items">
             <div v-for="episode in resultQuery" :key="episode" class="card">
                 <h3 class="ep-number">
-                    <button @click="copyToClipboard($route.path + formatLink(episode.title))" class="copy-link">
+                    <button :data-url="$route.path + formatLink(episode.title)" @click="copyToClipboard($route.path + formatLink(episode.title))" class="copy-link">
                         <fa :icon="['fas', 'link']" />
                     </button>
                     <span>{{episodeNumber(episode.title)}}</span>
@@ -102,9 +102,15 @@ export default {
             return moment(date).format('MMMM Do YYYY');
         },
         formatLink(episode) {
-            if (episode.indexOf(':') !== -1) {
-                let title = episode.split(':')[1];
+            if (episode.lastIndexOf(':') !== -1) {
+                let title = episode.split(/:(.+)/)[1];
                 title = title.replace(/[^\w\s]/gi, '')
+                title = title.trim();
+                title = title.replace(/\s+/g, '-').toLowerCase();
+                
+                return title;
+            } else {
+                let title = episode.replace(/[^\w\s]/gi, '')
                 title = title.trim();
                 title = title.replace(/\s+/g, '-').toLowerCase();
                 
@@ -127,14 +133,15 @@ export default {
             }
         },
         formatTitle(title) {
-            if (title.indexOf(':') !== -1) {
-                let prettyName = title.split(':')[1];
+            if (title.lastIndexOf(':') !== -1) {
+                let prettyName = title.split(/:(.+)/)[1];
                 prettyName = prettyName.trim();
                 
                 return prettyName;
             } else {
                 return title;
             }
+            
         },
         isNumeric(n) {
             return !isNaN(parseFloat(n)) && isFinite(n);

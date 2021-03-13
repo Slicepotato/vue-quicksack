@@ -76,7 +76,7 @@ export default {
         },
         formatLink(episode) {
             if (episode.indexOf(':') !== -1) {
-                let title = episode.split(':')[1];
+                let title = episode.split(/:(.+)/)[1];
                 title = title.replace(/[^\w\s]/gi, '')
                 title = title.trim();
                 title = title.replace(/\s+/g, '-').toLowerCase();
@@ -102,8 +102,8 @@ export default {
             }
         },
         formatTitle(title) {
-            if (title.indexOf(':') !== -1) {
-                let prettyName = title.split(':')[1];
+            if (title.lastIndexOf(':') !== -1) {
+                let prettyName = title.split(/:(.+)/)[1];
                 prettyName = prettyName.trim();
                 
                 return prettyName;

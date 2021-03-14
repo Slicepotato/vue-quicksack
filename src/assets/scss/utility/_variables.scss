@@ -1,0 +1,50 @@
+// Variables
+// --------------------------------------------------------------
+
+// Colors
+$linkColor: #78ab78;
+$wht: #fff;
+$blk: #1d1d1d;
+
+// --- Grey
+$grey-9: #2a2a2a;
+$grey-8: #3e3e3e;
+$grey-7: #515151;
+$grey-6: #6f6f6f;
+$grey-5: #828282;
+$grey-4: #aaaaaa;
+$grey-3: #c7c7c7;
+$grey-2: #eeeeee;
+$grey-1: #f8f8f8;
+
+$err-red: #cc1100;
+
+$riv-blue: #468dd3;
+$riv-blue-dk: #2767a5;
+
+$cadmium: #ed872d;
+$candy-apple: #a40000;
+$carmine: #a9203e;
+$falu: #801818;
+
+// z-index scale
+$z-index-1: 250;
+$z-index-2: 500;
+$z-index-3: 750;
+$z-index-4: 1000;
+$z-index-5: 1250;
+$z-index-6: 1500;
+$z-index-7: 1750;
+$z-index-8: 2000;
+
+// Breakpoints --- {usage} // @include break('small')
+$breakpoints: (
+  'small':  ( min-width:  767px ),
+  'medium': ( min-width:  992px ),
+  'large':  ( min-width: 1200px )
+) !default;
+
+$max-width: 1200px;
+$col2: $max-width / 2.75;
+$col3: $max-width / 3.75;
+$col4: $max-width / 4.75;

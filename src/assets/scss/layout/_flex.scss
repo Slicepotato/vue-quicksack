@@ -1,0 +1,8 @@
+.flex-between {
+    @include flexbox;
+    @include justify-content(space-between);
+
+    &--align-center {
+        @include align-items(center);
+    }
+}

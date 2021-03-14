@@ -12,10 +12,15 @@
                 <fa :icon="['fas', 'moon']" />
             </span>
         </div>
-        <h1>
-            <router-link to="/">FilmSack</router-link>
-        </h1>
-        <p class="subtitle">/QuickSack</p>
+        <div class="title">
+            <img src="@/assets/img/filmsack-pop.png" />
+            <div>
+                <h1>
+                    <router-link to="/">FilmSack</router-link>
+                </h1>
+                <p class="subtitle">/QuickSack</p>
+            </div>
+        </div>
         <p class="site-desc">Looking to see if <b>FilmSack</b> has already covered a film? You can search here to find when they talked about it and listen to the fun.</p>
     </header>
 </template>
@@ -72,6 +77,20 @@ header {
 }
 .site-desc {
     line-height: 1.25rem;
+}
+
+.title {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    margin-bottom: 1rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid $grey-5;
+
+    img {
+        width: 80px;
+        margin-right: 1rem;
+    }
 }
 
 .mode-toggle {

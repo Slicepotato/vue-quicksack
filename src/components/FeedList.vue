@@ -6,6 +6,13 @@
         </div>  
         <div class="recent-items">
             <div v-for="episode in resultQuery" :key="episode" class="card">
+                <v-lazy 
+                v-model="episode.isActive"
+                :options="{
+                    threshold: .5
+                }"
+                min-height="200"
+                transition="fade-transition">
                 <h3 class="ep-number">
                     <button :data-url="$route.path + formatLink(episode.title)" @click="copyToClipboard($route.path + formatLink(episode.title))" class="copy-link">
                         <fa :icon="['fas', 'link']" />
@@ -38,6 +45,7 @@
                     :type="episode.enclosure.type"
                     :objectid="episode.guid"
                 />
+                </v-lazy>
             </div>
         </div>  
         <button 

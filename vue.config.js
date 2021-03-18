@@ -7,4 +7,8 @@ module.exports = {
             }
         }
     },
+
+    transpileDependencies: [
+      'vuetify'
+    ]
 }
